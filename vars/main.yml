@@ -1,2 +1,6 @@
 ---
 # vars file for ansible-role-lotus
+go_name: go1.15.5.linux-amd64.tar.gz
+go_url: https://golang.org/dl/{{ go_name }}
+go_checksum: sha256:9a58494e8da722c3aef248c9227b0e9c528c7318309827780f16220998180a0d
+go_bin: /usr/local/go/bin

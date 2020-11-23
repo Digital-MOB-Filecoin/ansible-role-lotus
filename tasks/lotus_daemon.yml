@@ -13,7 +13,7 @@
     - name: Truncate log file
       shell:
         cmd: truncate -s 0 "{{ lotus_daemon_golog_file }}"
-  when: lotus_reset == "yes"
+  when: lotus_daemon_reset == "yes"
 
 - name: build Lotus daemon
   shell: make lotus

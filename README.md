@@ -1,22 +1,59 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+Ansible role that install and configures Filecoin's Lotus daemon and miner.
+
+**Supported platforms**
+
+- Ubuntu/Debian
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- **Required ansible version:** >= 2.9
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Parameter    | Default |  Description |
+|--------------|----------|-------------|
+|`lotus_git_repo`|`https://github.com/filecoin-project/lotus.git`| Lotus Git repository |
+|`lotus_git_version`|`v1.2.1`| Git tag, branch or hash to use for building lotus. |
+|`lotus_user`|`lotus`| System username which will run the lotus daemon and miner. |
+|`lotus_user_uid`|`532`| Lotus username UID. |
+|`lotus_golog_log_fmt`|`json`| Lotus logs formating. Applies to both daemon and miner/ |
+|`lotus_proof_params_path`|`/var/tmp/filecoin-proof-params`| Path where to store Filecoin Proof Parameters. |
+|`lotus_ipfs_gateway`|`https://proofs.filecoin.io/ipfs`| IPFS gateway to use for downloading Proof Parameters. |
+|`lotus_build_env`|`{'RUSTFLAGS': '-C target-cpu=native -g', 'FFI_BUILD_FROM_SOURCE': 1}`| Compiler flags to use for building lotus. |
+|`lotus_daemon_enabled`|`yes`| Whether or not to build and run the Lotus daemon. |
+|`lotus_daemon_reset`|`no`| Remove daemon data. |
+|`lotus_daemon_path`|`/var/lib/lotus`| Lotus daemon data store path. |
+|`lotus_daemon_golog_file`|`/var/log/lotus/daemon.log`| Lotus daemon log file location. |
+|`lotus_daemon_env`|`{}`| Extra environment variables to be passed to Lotus daemon at startup. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) for supported values. |
+|`lotus_daemon_systemd_extras`|`{}`| Extra systemd parameters to be passed to the systemd service file. |
+|`lotus_daemon_config`|`[API]
+  ListenAddress: "/ip4/0.0.0.0/tcp/1234/http"
+`| Lotus daemon `config.toml` file. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#configuration) for reference. |
+|`lotus_miner_enabled`|`no`| Wheter or not to build and run the Lotus miner. |
+|`lotus_miner_reset` | `no` | Remove miner data. |
+|`lotus_miner_init`|`no`| Set to yes if you want to initialize your miner during the bootstrap process. This requires a valid `lotus_miner_addr` and `lotus_miner_wallet_address`. |
+|`lotus_miner_path`|`/var/lib/lotusminer`| Lotus miner data store path. |
+|`lotus_miner_golog_file`|`/var/log/lotus/miner.log`| Lotus miner log file location. |
+|`lotus_miner_env`|`{}`| Extra environment variables to be passed to Lotus miner at startup. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) for supported values.|
+|`lotus_miner_systemd_extras`|`{}`| Extra systemd parameters to be passed to the systemd service file. |
+|`lotus_miner_config`|`[API]
+  ListenAddress = "/ip4/0.0.0.0/tcp/2345/http"
+[Libp2p]
+  ListenAddresses = ["/ip4/0.0.0.0/tcp/3452", "/ip6/::/tcp/0"]
+[Dealmaking]
+  ConsiderOnlineStorageDeals = true
+  ConsiderOfflineStorageDeals = true
+  ConsiderOnlineRetrievalDeals = true
+  ConsiderOfflineRetrievalDeals = true
+`| Lotus miner `config.toml` file. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#configuration) for reference.| 
+|`lotus_miner_addr`|`''` | Lotus miner address. Required if `lotus_miner_init` is set to `yes`. |
+|`lotus_miner_wallet_address`|`''`| Lotus miner wallet to be imported during bootstrap. Required if `lotus_miner_init` is set to `yes`. |
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -30,9 +67,9 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created by liviudm.
