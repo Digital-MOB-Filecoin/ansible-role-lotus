@@ -1,0 +1,61 @@
+---
+- name: update apt cache
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: install dependencies
+  become: yes
+  apt:
+    state: latest
+    name:
+      - make
+      - mesa-opencl-icd
+      - ocl-icd-opencl-dev
+      - gcc
+      - git
+      - bzr
+      - jq
+      - pkg-config
+      - curl
+      - libclang-dev
+      - libhwloc-dev
+
+- name: install rust
+  become: yes
+  shell: snap install rustup --classic
+
+- name: download Go
+  get_url:
+    url: "{{ go_url }}"
+    dest: "{{ ansible_env.HOME }}"
+    checksum: "{{ go_checksum }}"
+
+- name: unarchive Go
+  become: yes
+  unarchive:
+    src: "{{ ansible_env.HOME }}/{{ go_name }}"
+    dest: /usr/local
+    remote_src: yes
+
+- name: add Go binary to PATH
+  become: yes
+  copy:
+    dest: /etc/profile.d/lotus-ansible.sh
+    content: export PATH=$PATH:{{ go_bin }}
+
+- name: load new PATH
+  shell: source /etc/profile.d/lotus-ansible.sh
+  args:
+    executable: /bin/bash
+
+- name: Create Go symbolic link
+  become: yes
+  file:
+    src: "{{ go_bin }}/go"
+    dest: "/usr/local/bin/go"
+    state: link
+
+- name: check go version
+  command: go version

@@ -1,0 +1,27 @@
+[Unit]
+Description=Lotus Miner
+After=network.target
+After=lotus-daemon.service
+PartOf=lotus-daemon.service
+
+[Service]
+User={{ lotus_user }}
+Group={{ lotus_user }}
+ExecStart=/usr/local/bin/lotus-miner run
+Environment=LOTUS_PATH="{{ lotus_daemon_path }}"
+Environment=LOTUS_MINER_PATH="{{ lotus_miner_path }}"
+Environment=GOLOG_FILE="{{ lotus_miner_golog_file }}"
+Environment=GOLOG_LOG_FMT="{{ lotus_golog_log_fmt }}"
+{% for item in lotus_miner_env | dict2items -%}
+Environment={{ item.key }}="{{ item.value }}"
+{% endfor %}
+
+{% for item in lotus_miner_systemd_extras | dict2items -%}
+{{ item.key }}={{ item.value }}
+{% endfor -%}
+
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

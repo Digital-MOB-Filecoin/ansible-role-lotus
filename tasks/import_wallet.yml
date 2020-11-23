@@ -1,0 +1,21 @@
+---
+- name: Ensure wallet is imported
+  block:
+    - name: Verify lotus_wallet_keyinfo is defined
+      fail: msg="lotus_wallet_keyinfo is not defined"
+      when: lotus_wallet_keyinfo is not defined
+    - name: Ensure keystore path created
+      file:
+        path: "{{ lotus_daemon_path }}/keystore/"
+        state: directory
+        owner: "{{ lotus_user }}"
+        group: "{{ lotus_user }}"
+        mode: "0700"
+    - name: Ensure wallet imported
+      become_user: "{{ lotus_user }}"
+      shell:
+        cmd: /usr/local/bin/lotus-shed keyinfo import
+        stdin: "{{ lotus_wallet_keyinfo }}"
+      ignore_errors: true
+      environment:
+        LOTUS_PATH: "{{ lotus_daemon_path }}"

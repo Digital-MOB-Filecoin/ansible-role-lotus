@@ -1,0 +1,15 @@
+---
+# tasks file for ansible-role-lotus
+- name: Include OS dependencies tasks
+  include_tasks: "os_deps.yml"
+
+- name: Include Lotus common tasks
+  include_tasks: "lotus_common.yml"
+
+- name: Include Lotus Daemon tasks
+  include_tasks: "lotus_daemon.yml"
+  when: lotus_daemon_enabled | bool
+
+- name: Include Lotus Miner tasks
+  include_tasks: "lotus_miner.yml"
+  when: lotus_miner_enabled | bool

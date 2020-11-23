@@ -1,0 +1,86 @@
+---
+- name: Reset system
+  block:
+    - name: Ensure lotus miner stopped
+      service:
+        name: lotus-miner
+        state: stopped
+      ignore_errors: yes
+    - name: Remove lotus repository
+      file:
+        path: "{{ lotus_miner_path }}"
+        state: absent
+    - name: Truncate log file
+      shell:
+        cmd: truncate -s 0 "{{ lotus_miner_golog_file }}"
+  when: lotus_reset == "yes"
+
+- name: build Lotus miner
+  shell: make lotus-miner lotus-worker
+  args:
+    chdir: "{{ ansible_env.HOME }}/lotus"
+  environment: "{{ lotus_build_env }}"
+
+- name: install Lotus miner
+  become: yes
+  shell: make install-miner install-worker
+  args:
+    chdir: "{{ ansible_env.HOME }}/lotus"
+
+- name: ensure lotus miner directory exists
+  become: true
+  file:
+    path: "{{ lotus_miner_path }}"
+    owner: "{{ lotus_user }}"
+    group: "{{ lotus_user }}"
+    state: directory
+
+- name: copy Lotus daemon configuration file
+  become: yes
+  template:
+    src: ../templates/config.toml.j2
+    dest: "{{ lotus_miner_path }}/config.toml"
+    owner: "{{ lotus_user }}"
+    group: "{{ lotus_user }}"
+    mode: "0644"
+  vars:
+    conf: "{{ lotus_miner_config }}"
+
+- name: copy Lotus miner service file
+  become: yes
+  template:
+    src: ../templates/lotus_miner/lotus-miner.service.j2
+    dest: /etc/systemd/system/lotus-miner.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - systemd-daemon-reload
+
+- name: copy Lotus miner init service
+  become: yes
+  template:
+    src: ../templates/lotus_miner/lotus-miner-init.service.j2
+    dest: /etc/systemd/system/lotus-miner.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - systemd-daemon-reload
+  when: lotus_miner_init == "yes"
+
+- name: initialize Lotus miner
+  become: yes
+  service:
+    name: lotus-miner-init
+    state: started
+  when: lotus_miner_init == "yes"
+
+
+- name: enable system service for lotus-miner
+  become: yes
+  service:
+    name: lotus-miner
+    enabled: yes
+    state: started
+  when: lotus_miner_init == "no"

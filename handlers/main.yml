@@ -1,0 +1,5 @@
+---
+# handlers file for ansible-role-lotus
+- name: systemd-daemon-reload
+  systemd:
+    daemon_reload: yes

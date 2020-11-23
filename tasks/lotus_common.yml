@@ -1,0 +1,32 @@
+---
+- name: Ensure lotus user exists
+  user:
+    name: "{{ lotus_user }}"
+    state: present
+    uid: "{{ lotus_user_uid }}"
+    system: yes
+
+- name: Clone the GitHub Lotus repository
+  git:
+    repo: "{{ lotus_git_repo }}"
+    dest: "{{ ansible_env.HOME }}/lotus"
+    version: "{{ lotus_git_version }}"
+    accept_hostkey: yes
+
+- name: make clean
+  shell: make clean
+  args:
+    chdir: "{{ ansible_env.HOME }}/lotus"
+
+- name: make lotus-shed lotus-bench
+  shell: make lotus-shed lotus-bench
+  args:
+    chdir: "{{ ansible_env.HOME }}/lotus"
+  environment: "{{ lotus_build_env }}"
+
+- name: install lotus-seed lotus-shed
+  shell: |
+    install -C ./lotus-shed /usr/local/bin/lotus-shed
+    install -C ./lotus-bench /usr/local/bin/lotus-bench
+  args:
+    chdir: "{{ ansible_env.HOME }}/lotus"
