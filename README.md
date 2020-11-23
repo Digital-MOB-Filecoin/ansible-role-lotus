@@ -31,8 +31,7 @@ Role Variables
 |`lotus_daemon_golog_file`|`/var/log/lotus/daemon.log`| Lotus daemon log file location. |
 |`lotus_daemon_env`|`{}`| Extra environment variables to be passed to Lotus daemon at startup. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) for supported values. |
 |`lotus_daemon_systemd_extras`|`{}`| Extra systemd parameters to be passed to the systemd service file. |
-|`lotus_daemon_config`|`[API]\n  ListenAddress: "/ip4/0.0.0.0/tcp/1234/http"
-`| Lotus daemon `config.toml` file. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#configuration) for reference. |
+|`lotus_daemon_config`|`[API]\n  ListenAddress: "/ip4/0.0.0.0/tcp/1234/http"`| Lotus daemon `config.toml` file. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#configuration) for reference. |
 |`lotus_miner_enabled`|`no`| Wheter or not to build and run the Lotus miner. |
 |`lotus_miner_reset` | `no` | Remove miner data. |
 |`lotus_miner_init`|`no`| Set to yes if you want to initialize your miner during the bootstrap process. This requires a valid `lotus_miner_addr` and `lotus_miner_wallet_address`. |
@@ -40,8 +39,7 @@ Role Variables
 |`lotus_miner_golog_file`|`/var/log/lotus/miner.log`| Lotus miner log file location. |
 |`lotus_miner_env`|`{}`| Extra environment variables to be passed to Lotus miner at startup. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) for supported values.|
 |`lotus_miner_systemd_extras`|`{}`| Extra systemd parameters to be passed to the systemd service file. |
-|`lotus_miner_config`|`[API]\n  ListenAddress = "/ip4/0.0.0.0/tcp/2345/http"\n[Libp2p]\n  ListenAddresses = ["/ip4/0.0.0.0/tcp/3452", "/ip6/::/tcp/0"]\n [Dealmaking]\n  ConsiderOnlineStorageDeals = true\n  ConsiderOfflineStorageDeals = true\n ConsiderOnlineRetrievalDeals = true\n ConsiderOfflineRetrievalDeals = true
-`| Lotus miner `config.toml` file. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#configuration) for reference.| 
+|`lotus_miner_config`|`[API]\n  ListenAddress = "/ip4/0.0.0.0/tcp/2345/http"\n[Libp2p]\n  ListenAddresses = ["/ip4/0.0.0.0/tcp/3452", "/ip6/::/tcp/0"]\n [Dealmaking]\n  ConsiderOnlineStorageDeals = true\n  ConsiderOfflineStorageDeals = true\n ConsiderOnlineRetrievalDeals = true\n ConsiderOfflineRetrievalDeals = true`| Lotus miner `config.toml` file. See [the official documentation](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#configuration) for reference.| 
 |`lotus_miner_addr`|`''` | Lotus miner address. Required if `lotus_miner_init` is set to `yes`. |
 |`lotus_miner_wallet_address`|`''`| Lotus miner wallet to be imported during bootstrap. Required if `lotus_miner_init` is set to `yes`. |
 
