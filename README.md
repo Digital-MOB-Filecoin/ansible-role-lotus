@@ -12,6 +12,8 @@ Requirements
 
 - **Required ansible version:** >= 2.9
 
+For `lotus` requirements please [check the official documentation](https://docs.filecoin.io/get-started/lotus/installation/#minimal-requirements).
+
 Role Variables
 --------------
 

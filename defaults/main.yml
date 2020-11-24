@@ -2,15 +2,15 @@
 # defaults file for ansible-role-lotus
 lotus_git_repo: "https://github.com/filecoin-project/lotus.git"
 lotus_git_version: "v1.2.1"
+lotus_build_env:
+  RUSTFLAGS: "-C target-cpu=native -g"
+  FFI_BUILD_FROM_SOURCE: 1
 
 lotus_user: "lotus"
 lotus_user_uid: "532"
 lotus_golog_log_fmt: json
 lotus_proof_params_path: "/var/tmp/filecoin-proof-params"
 lotus_ipfs_gateway: "https://proofs.filecoin.io/ipfs"
-lotus_build_env:
-  RUSTFLAGS: "-C target-cpu=native -g"
-  FFI_BUILD_FROM_SOURCE: 1
 
 lotus_daemon_enabled: yes
 lotus_daemon_reset: no
