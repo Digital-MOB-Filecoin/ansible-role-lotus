@@ -6,6 +6,14 @@
 - name: Include Lotus common tasks
   include_tasks: "lotus_common.yml"
 
+- name: Destroy Lotus Daemon
+  include_tasks: "destroy_daemon.yml"
+  when: destroy_lotus_daemon | bool
+
+- name: Destroy Lotus Miner
+  include_tasks: "destroy_miner.yml"
+  when: destroy_lotus_miner | bool
+
 - name: Include Lotus Daemon tasks
   include_tasks: "lotus_daemon.yml"
   when: lotus_daemon_enabled | bool

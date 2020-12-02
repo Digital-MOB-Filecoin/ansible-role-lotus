@@ -6,7 +6,7 @@ ConditionPathExists=!{{ lotus_miner_path }}/datastore
 [Service]
 User={{ lotus_user }}
 Group={{ lotus_user }}
-ExecStart=/usr/local/bin/lotus-miner init --actor="{{ lotus_miner_addr }}" --owner="{{ lotus_miner_wallet_address }}" --nosync
+ExecStart=/usr/local/bin/lotus-miner init --actor="{{ lotus_miner_actor_address }}" --owner="{{ lotus_miner_owner_address }}" --worker="{{ lotus_miner_worker_address }}"
 Environment=LOTUS_PATH="{{ lotus_path }}"
 Environment=LOTUS_MINER_PATH="{{ lotus_miner_path }}"
 Environment=GOLOG_FILE="{{ lotus_miner_golog_file }}"
@@ -15,5 +15,6 @@ Environment=GOLOG_LOG_FMT="{{ lotus_golog_log_fmt }}"
 Environment={{ item.key }}="{{ item.value }}"
 {% endfor %}
 
+# Add restart never
 [Install]
 WantedBy=multi-user.target

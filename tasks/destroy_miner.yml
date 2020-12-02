@@ -1,0 +1,16 @@
+---
+- name: Destroy Lotus Miner
+  block:
+    - name: Ensure lotus miner stopped
+      service:
+        name: lotus-miner
+        state: stopped
+      ignore_errors: yes
+    - name: Remove lotus repository
+      file:
+        path: "{{ lotus_miner_path }}"
+        state: absent
+    - name: Truncate log file
+      shell:
+        cmd: truncate -s 0 "{{ lotus_miner_golog_file }}"
+  when: destroy_lotus_miner == "yes"

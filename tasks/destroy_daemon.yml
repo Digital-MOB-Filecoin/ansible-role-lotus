@@ -1,0 +1,16 @@
+---
+- name: Destroy Lotus Daemon
+  block:
+    - name: Ensure lotus daemon stopped
+      service:
+        name: lotus-daemon
+        state: stopped
+      ignore_errors: yes
+    - name: Remove lotus daemon repository
+      file:
+        path: "{{ lotus_daemon_path }}"
+        state: absent
+    - name: Truncate log file
+      shell:
+        cmd: truncate -s 0 "{{ lotus_daemon_golog_file }}"
+  when: destroy_lotus_daemon == "yes"

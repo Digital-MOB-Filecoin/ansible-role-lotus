@@ -3,7 +3,7 @@
 lotus_git_repo: "https://github.com/filecoin-project/lotus.git"
 lotus_git_version: "v1.2.1"
 lotus_build_env:
-  RUSTFLAGS: "-C target-cpu=native -g"
+  RUSTFLAGS: "-C target-cpu=native"
   FFI_BUILD_FROM_SOURCE: 1
 
 lotus_user: "lotus"
@@ -13,7 +13,6 @@ lotus_proof_params_path: "/var/tmp/filecoin-proof-params"
 lotus_ipfs_gateway: "https://proofs.filecoin.io/ipfs"
 
 lotus_daemon_enabled: yes
-lotus_daemon_reset: no
 lotus_daemon_path: "/var/lib/lotus"
 lotus_daemon_golog_file: "/var/log/lotus/daemon.log"
 lotus_daemon_env: {}
@@ -23,7 +22,6 @@ lotus_daemon_config: |
     ListenAddress: "/ip4/0.0.0.0/tcp/1234/http"
 
 lotus_miner_enabled: no
-lotus_miner_reset: no
 lotus_miner_init: no
 lotus_miner_path: "/var/lib/lotusminer"
 lotus_miner_golog_file: "/var/log/lotus/miner.log"
@@ -39,5 +37,9 @@ lotus_miner_config: |
     ConsiderOfflineStorageDeals = true
     ConsiderOnlineRetrievalDeals = true
     ConsiderOfflineRetrievalDeals = true
-lotus_miner_addr: ""
-lotus_miner_wallet_address: ""
+lotus_miner_actor_address: ""
+lotus_miner_owner_address: ""
+lotus_miner_worker_address: ""
+
+destroy_lotus_daemon: no
+destroy_lotus_miner: no
